@@ -207,21 +207,21 @@ export default function CreateWorkout() {
   return (
     <div className="container mx-auto p-4 max-w-4xl">
       <header className="mb-8">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
           <Link href="/">
             <Button variant="outline" size="sm">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Voltar
             </Button>
           </Link>
-          <div className="flex-1">
+          <div className="flex-1 w-full md:w-auto">
             <h1 className="text-3xl font-bold">Criar Novo Treino</h1>
             <p className="text-muted-foreground">
               Passo {step} de 3: {step === 1 ? "Informações Pessoais" : step === 2 ? "Preferências de Treino" : "Revisar e Salvar"}
             </p>
           </div>
           {step === 1 && (
-            <div>
+            <div className="w-full md:w-auto">
               <input
                 type="file"
                 accept=".json"
@@ -229,7 +229,7 @@ export default function CreateWorkout() {
                 ref={fileInputRef}
                 onChange={handleFileUpload}
               />
-              <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
+              <Button variant="outline" onClick={() => fileInputRef.current?.click()} className="w-full md:w-auto">
                 <Upload className="h-4 w-4 mr-2" />
                 Importar JSON
               </Button>
@@ -371,10 +371,9 @@ export default function CreateWorkout() {
                       <SelectValue placeholder="Selecione o modelo" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo (Mais barato)</SelectItem>
                       <SelectItem value="gpt-4o-mini">GPT-4o Mini (Rápido e econômico)</SelectItem>
                       <SelectItem value="gpt-4o">GPT-4o (Mais avançado)</SelectItem>
-                      <SelectItem value="gpt-4-turbo">GPT-4 Turbo</SelectItem>
+                      <SelectItem value="gpt-4.1-nano">GPT-4.1 Nano (Econômico)</SelectItem>
                       <SelectItem value="o1-preview">o1-preview (Raciocínio avançado)</SelectItem>
                       <SelectItem value="o1-mini">o1-mini (Raciocínio rápido)</SelectItem>
                     </SelectContent>
@@ -384,13 +383,13 @@ export default function CreateWorkout() {
                   </p>
                 </div>
               </div>
-              <div className="flex gap-4">
-                <Button variant="outline" onClick={() => setStep(1)} className="flex-1">
+              <div className="flex flex-col md:flex-row gap-4">
+                <Button variant="outline" onClick={() => setStep(1)} className="flex-1 w-full">
                   Voltar
                 </Button>
                 <Button
                   onClick={generateWorkout}
-                  className="flex-1"
+                  className="flex-1 w-full"
                   disabled={!trainingType || !sessionDuration || !level || !frequency || !splitsCount || !selectedModel || isLoading}
                 >
                   {isLoading ? (
@@ -476,13 +475,13 @@ export default function CreateWorkout() {
                 ))}
               </div>
 
-              <div className="flex gap-4">
-                <Button variant="outline" onClick={() => setStep(2)} className="flex-1">
+              <div className="flex flex-col md:flex-row gap-4">
+                <Button variant="outline" onClick={() => setStep(2)} className="flex-1 w-full">
                   Gerar Novamente
                 </Button>
                 <Button
                   onClick={saveWorkout}
-                  className="flex-1"
+                  className="flex-1 w-full"
                   disabled={!workoutName.trim() || !durationDays || isLoading}
                 >
                   {isLoading ? (

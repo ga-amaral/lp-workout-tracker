@@ -45,9 +45,9 @@ export default function Home() {
   return (
     <div className="container mx-auto p-4 max-w-6xl">
       <header className="mb-8">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Dumbbell className="h-8 w-8 text-primary" />
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3 w-full md:w-auto">
+            <Dumbbell className="h-8 w-8 text-primary flex-shrink-0" />
             <div>
               <h1 className="text-3xl font-bold">Workout Tracker</h1>
               <p className="text-muted-foreground">
@@ -55,20 +55,22 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <Link href="/settings">
-            <Button variant="outline" size="sm">
-              <Settings className="h-4 w-4 mr-2" />
-              Configurações
+          <div className="flex items-center gap-2 w-full md:w-auto justify-start md:justify-end">
+            <Link href="/settings">
+              <Button variant="outline" size="sm">
+                <Settings className="h-4 w-4 mr-2" />
+                Configurações
+              </Button>
+            </Link>
+            <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: '/auth/signin' })}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Sair
             </Button>
-          </Link>
-          <Button variant="ghost" size="sm" onClick={() => signOut()}>
-            <LogOut className="h-4 w-4 mr-2" />
-            Sair
-          </Button>
+          </div>
         </div>
       </header>
 
-      <main className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <main className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">

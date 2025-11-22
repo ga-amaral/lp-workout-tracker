@@ -147,7 +147,7 @@ export default function WorkoutView() {
   return (
     <div className="container mx-auto p-4 max-w-5xl">
       <header className="mb-6">
-        <div className="flex items-center justify-between gap-4 mb-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
           <Link href="/">
             <Button variant="outline" size="sm">
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -155,14 +155,14 @@ export default function WorkoutView() {
             </Button>
           </Link>
           {workout.isActive && (
-            <Badge variant="default" className="bg-green-600 hover:bg-green-700">
+            <Badge variant="default" className="bg-green-600 hover:bg-green-700 w-fit">
               <CheckCircle2 className="h-3 w-3 mr-1" />
               Treino Ativo
             </Badge>
           )}
         </div>
         <div>
-          <h1 className="text-4xl font-bold mb-2">{workout.name}</h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-2">{workout.name}</h1>
           <p className="text-muted-foreground">
             {splits.length} divisões • {totalExercises} exercícios • {Math.round(workout.completionPercentage)}% completo
           </p>
@@ -179,7 +179,7 @@ export default function WorkoutView() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6">
               <div className="flex items-start gap-3">
                 <div className="p-2 rounded-lg bg-primary/10">
                   <Calendar className="h-5 w-5 text-primary" />
@@ -221,9 +221,9 @@ export default function WorkoutView() {
               <Progress value={workout.completionPercentage} className="h-2" />
             </div>
 
-            <div className="mt-6 flex gap-3">
+            <div className="mt-6 flex flex-col sm:flex-row gap-3">
               {!workout.isActive && (
-                <Button onClick={makeActive} className="flex-1" disabled={isActivating}>
+                <Button onClick={makeActive} className="flex-1 w-full" disabled={isActivating}>
                   {isActivating ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
@@ -238,7 +238,7 @@ export default function WorkoutView() {
                 </Button>
               )}
               {workout.isActive && (
-                <Link href="/workout/current" className="flex-1">
+                <Link href="/workout/current" className="flex-1 w-full">
                   <Button className="w-full">
                     <Play className="h-4 w-4 mr-2" />
                     Continuar Treino
@@ -259,7 +259,7 @@ export default function WorkoutView() {
           </CardHeader>
           <CardContent>
             <Tabs defaultValue={splits[0]?.name} className="w-full">
-              <TabsList className="flex flex-col w-full h-auto gap-2 bg-muted/50 p-3 mb-4 sm:flex-row sm:flex-wrap">
+              <TabsList className="flex flex-col w-full h-auto gap-2 bg-muted/50 p-3 mb-4 sm:flex-row sm:flex-wrap justify-start">
                 {splits.map((split, index) => (
                   <TabsTrigger
                     key={index}

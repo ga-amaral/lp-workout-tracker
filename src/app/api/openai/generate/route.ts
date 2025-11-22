@@ -51,13 +51,29 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    if (!process.env.ENCRYPTION_KEY) {
+      return NextResponse.json(
+        { error: "Internal Server Error: ENCRYPTION_KEY not configured" },
+        { status: 500 }
+      )
+    }
+
     // Decrypt the OpenAI key
-    const decryptedKey = CryptoJS.AES.decrypt(user.openai_key, process.env.ENCRYPTION_KEY!).toString(CryptoJS.enc.Utf8)
+    let decryptedKey;
+    try {
+      decryptedKey = CryptoJS.AES.decrypt(user.openai_key, process.env.ENCRYPTION_KEY).toString(CryptoJS.enc.Utf8)
+    } catch (e) {
+      console.error("Decryption error:", e)
+      return NextResponse.json(
+        { error: "Erro ao descriptografar chave. Por favor, configure sua API Key novamente nas configurações." },
+        { status: 400 }
+      )
+    }
 
     if (!decryptedKey) {
       return NextResponse.json(
-        { error: "Failed to decrypt API key" },
-        { status: 500 }
+        { error: "Chave API inválida ou corrompida. Por favor, configure novamente." },
+        { status: 400 }
       )
     }
 

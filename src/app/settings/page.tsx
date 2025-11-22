@@ -191,7 +191,7 @@ export default function Settings() {
   return (
     <div className="container mx-auto p-4 max-w-2xl">
       <header className="mb-8">
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
           <Link href="/">
             <Button variant="outline" size="sm">
               <ArrowLeft className="h-4 w-4 mr-2" />
@@ -263,8 +263,8 @@ export default function Settings() {
               </Alert>
             )}
 
-            <div className="flex gap-3">
-              <Button onClick={handleSave} disabled={isSaving || isDeleting} className="flex-1">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button onClick={handleSave} disabled={isSaving || isDeleting} className="flex-1 w-full">
                 {isSaving ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -283,6 +283,7 @@ export default function Settings() {
                   onClick={handleDelete}
                   disabled={isSaving || isDeleting}
                   variant="destructive"
+                  className="w-full sm:w-auto"
                 >
                   {isDeleting ? (
                     <>
