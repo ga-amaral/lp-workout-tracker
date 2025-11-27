@@ -1,9 +1,11 @@
+/**
+ * OpenAI Workout Generation API
+ * @author Gabriel Amaral (https://www.instagram.com/sougabrielamaral/) - 2025-11-27
+ */
 import { NextRequest, NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
-import { supabaseAdmin } from "@/lib/supabase"
 import OpenAI from 'openai'
-import CryptoJS from 'crypto-js'
 
 interface WorkoutFormData {
   gender: string
@@ -13,7 +15,6 @@ interface WorkoutFormData {
   level: string
   frequency: string
   splitsCount: number
-  model: string
   currentWorkout?: any
 }
 
@@ -30,50 +31,12 @@ export async function POST(request: NextRequest) {
 
     const formData: WorkoutFormData = await request.json()
 
-    if (!formData.model) {
+    // Verificar se a chave OpenAI está configurada no servidor
+    if (!process.env.OPENAI_API_KEY) {
+      console.error("OPENAI_API_KEY não configurada no servidor")
       return NextResponse.json(
-        { error: "Model selection is required" },
-        { status: 400 }
-      )
-    }
-
-    // Get user's OpenAI key
-    const { data: user, error } = await supabaseAdmin
-      .from('users')
-      .select('openai_key')
-      .eq('id', session.user.id)
-      .single()
-
-    if (error || !user?.openai_key) {
-      return NextResponse.json(
-        { error: "OpenAI API key not configured" },
-        { status: 400 }
-      )
-    }
-
-    if (!process.env.ENCRYPTION_KEY) {
-      return NextResponse.json(
-        { error: "Internal Server Error: ENCRYPTION_KEY not configured" },
-        { status: 500 }
-      )
-    }
-
-    // Decrypt the OpenAI key
-    let decryptedKey;
-    try {
-      decryptedKey = CryptoJS.AES.decrypt(user.openai_key, process.env.ENCRYPTION_KEY).toString(CryptoJS.enc.Utf8)
-    } catch (e) {
-      console.error("Decryption error:", e)
-      return NextResponse.json(
-        { error: "Erro ao descriptografar chave. Por favor, configure sua API Key novamente nas configurações." },
-        { status: 400 }
-      )
-    }
-
-    if (!decryptedKey) {
-      return NextResponse.json(
-        { error: "Chave API inválida ou corrompida. Por favor, configure novamente." },
-        { status: 400 }
+        { error: "Serviço de IA temporariamente indisponível" },
+        { status: 503 }
       )
     }
 
@@ -131,11 +94,12 @@ REGRAS IMPORTANTES:
 8. SEGURANÇA: Respeite o nível do praticante (básico = exercícios mais simples, avançado = exercícios mais técnicos)
 9. AQUECIMENTO: O primeiro exercício de cada divisão deve ser mais leve/preparatório
 10. COMPLETUDE: Cada divisão deve ser um treino completo e balanceado
+11. NOMENCLATURA: Nos nomes dos treinos coloque apenas o nome do treino, como Treino A, Treino B, etc. **Não coloque nada além disso**
 
 IMPORTANTE: NÃO seja minimalista! Gere um treino COMPLETO com a quantidade EXATA de exercícios especificada (${recommendedExercises} exercícios por divisão).`
 
     const openai = new OpenAI({
-      apiKey: decryptedKey,
+      apiKey: process.env.OPENAI_API_KEY,
     })
 
     const completion = await openai.chat.completions.create({
@@ -149,7 +113,7 @@ IMPORTANTE: NÃO seja minimalista! Gere um treino COMPLETO com a quantidade EXAT
           content: basePrompt
         }
       ],
-      model: formData.model,
+      model: "gpt-4.1-nano", // Modelo fixo - GPT-4.1 nano
       response_format: { type: "json_object" }
     })
 

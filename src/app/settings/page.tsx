@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { ArrowLeft, Key, Loader2, Check, AlertCircle, Trash2 } from "lucide-react"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 export default function Settings() {
   const { data: session, status } = useSession()
@@ -192,116 +193,25 @@ export default function Settings() {
     <div className="container mx-auto p-4 max-w-2xl">
       <header className="mb-8">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-          <Link href="/">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link href="/">
+              <Button variant="outline" size="sm">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Voltar
+              </Button>
+            </Link>
+            <ThemeToggle />
+          </div>
           <div>
             <h1 className="text-3xl font-bold">Configurações</h1>
             <p className="text-muted-foreground">
-              Configure sua integração com a OpenAI
+              Gerencie suas preferências de conta
             </p>
           </div>
         </div>
       </header>
 
       <main className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Key className="h-5 w-5" />
-              API Key da OpenAI
-            </CardTitle>
-            <CardDescription>
-              Sua chave API é armazenada de forma segura e criptografada
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {hasApiKey && (
-              <Alert>
-                <Check className="h-4 w-4" />
-                <AlertDescription>
-                  Você já possui uma API Key configurada. Para alterá-la, insira uma nova chave abaixo.
-                </AlertDescription>
-              </Alert>
-            )}
-
-            <div className="space-y-2">
-              <Label htmlFor="openaiKey">
-                {hasApiKey ? "Nova API Key (opcional)" : "API Key"}
-              </Label>
-              <Input
-                id="openaiKey"
-                type="password"
-                placeholder="sk-..."
-                value={openaiKey}
-                onChange={(e) => setOpenaiKey(e.target.value)}
-              />
-              <p className="text-xs text-muted-foreground">
-                Você pode obter sua API Key em{" "}
-                <a
-                  href="https://platform.openai.com/api-keys"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline"
-                >
-                  platform.openai.com/api-keys
-                </a>
-              </p>
-            </div>
-
-            {message && (
-              <Alert variant={messageType === "error" ? "destructive" : "default"}>
-                {messageType === "error" ? (
-                  <AlertCircle className="h-4 w-4" />
-                ) : (
-                  <Check className="h-4 w-4" />
-                )}
-                <AlertDescription>{message}</AlertDescription>
-              </Alert>
-            )}
-
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button onClick={handleSave} disabled={isSaving || isDeleting} className="flex-1 w-full">
-                {isSaving ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Salvando...
-                  </>
-                ) : (
-                  <>
-                    <Key className="mr-2 h-4 w-4" />
-                    {hasApiKey ? "Atualizar API Key" : "Salvar API Key"}
-                  </>
-                )}
-              </Button>
-
-              {hasApiKey && (
-                <Button
-                  onClick={handleDelete}
-                  disabled={isSaving || isDeleting}
-                  variant="destructive"
-                  className="w-full sm:w-auto"
-                >
-                  {isDeleting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Removendo...
-                    </>
-                  ) : (
-                    <>
-                      <Trash2 className="mr-2 h-4 w-4" />
-                      Remover
-                    </>
-                  )}
-                </Button>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -355,26 +265,6 @@ export default function Settings() {
                 "Alterar Senha"
               )}
             </Button>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Sobre a Seleção de Modelo</CardTitle>
-            <CardDescription>
-              Como escolher o modelo GPT correto
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground mb-3">
-              Você poderá escolher qual modelo da OpenAI usar na hora de criar cada treino. Cada modelo tem características diferentes:
-            </p>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>• <strong>GPT-4o:</strong> Modelo mais avançado e preciso</li>
-              <li>• <strong>GPT-4o Mini:</strong> Rápido e econômico</li>
-              <li>• <strong>o1-preview/mini:</strong> Modelos de raciocínio avançado (novos)</li>
-              <li>• <strong>GPT-3.5 Turbo:</strong> Opção mais barata</li>
-            </ul>
           </CardContent>
         </Card>
       </main>

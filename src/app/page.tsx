@@ -18,6 +18,8 @@ import {
 import { PlusCircle, Play, Settings, Dumbbell, LogOut, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { signOut } from "next-auth/react"
+import { ThemeToggle } from "@/components/theme-toggle"
+
 
 export default function Home() {
   const { data: session, status } = useSession()
@@ -62,6 +64,7 @@ export default function Home() {
                 Configurações
               </Button>
             </Link>
+            <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: '/auth/signin' })}>
               <LogOut className="h-4 w-4 mr-2" />
               Sair
@@ -113,10 +116,10 @@ export default function Home() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Settings className="h-5 w-5" />
-              Configurações da IA
+              Minhas Configurações
             </CardTitle>
             <CardDescription>
-              Configure sua chave da OpenAI e preferências
+              Gerencie suas preferências de conta
             </CardDescription>
           </CardHeader>
           <CardContent>

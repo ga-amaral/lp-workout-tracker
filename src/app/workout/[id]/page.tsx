@@ -11,6 +11,8 @@ import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Dumbbell, Calendar, Target, Play, CheckCircle2 } from "lucide-react"
+import { ThemeToggle } from "@/components/theme-toggle"
+
 
 interface Workout {
   id: string
@@ -148,12 +150,15 @@ export default function WorkoutView() {
     <div className="container mx-auto p-4 max-w-5xl">
       <header className="mb-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
-          <Link href="/">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link href="/">
+              <Button variant="outline" size="sm">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Voltar
+              </Button>
+            </Link>
+            <ThemeToggle />
+          </div>
           {workout.isActive && (
             <Badge variant="default" className="bg-green-600 hover:bg-green-700 w-fit">
               <CheckCircle2 className="h-3 w-3 mr-1" />

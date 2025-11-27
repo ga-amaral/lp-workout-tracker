@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { ArrowLeft, Loader2, Dumbbell, CheckCircle, Upload } from "lucide-react"
+import { ThemeToggle } from "@/components/theme-toggle"
 
 interface WorkoutData {
   splits: Array<{
@@ -29,7 +30,6 @@ export default function CreateWorkout() {
   const router = useRouter()
   const [step, setStep] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
-  const [hasOpenAIKey, setHasOpenAIKey] = useState(false)
   const [workoutData, setWorkoutData] = useState<WorkoutData | null>(null)
   const [workoutName, setWorkoutName] = useState("")
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -43,26 +43,13 @@ export default function CreateWorkout() {
   const [frequency, setFrequency] = useState("")
   const [splitsCount, setSplitsCount] = useState("")
   const [durationDays, setDurationDays] = useState("")
-  const [selectedModel, setSelectedModel] = useState("gpt-4o-mini")
 
   useEffect(() => {
     if (status === "loading") return
     if (!session) {
       router.push("/auth/signin")
-    } else {
-      checkUserSettings()
     }
   }, [session, status, router])
-
-  const checkUserSettings = async () => {
-    try {
-      const response = await fetch("/api/user/settings")
-      const data = await response.json()
-      setHasOpenAIKey(data.user.hasOpenAIKey)
-    } catch (error) {
-      console.error("Error checking settings:", error)
-    }
-  }
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -105,7 +92,6 @@ export default function CreateWorkout() {
           level,
           frequency,
           splitsCount: parseInt(splitsCount),
-          model: selectedModel,
         }),
       })
 
@@ -182,38 +168,21 @@ export default function CreateWorkout() {
     return null
   }
 
-  if (!hasOpenAIKey) {
-    return (
-      <div className="container mx-auto p-4 max-w-2xl">
-        <Card>
-          <CardHeader>
-            <CardTitle>Configure a OpenAI Primeiros</CardTitle>
-            <CardDescription>
-              Você precisa configurar sua chave API da OpenAI para gerar treinos personalizados.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Link href="/settings">
-              <Button>
-                Configurar OpenAI
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
-    )
-  }
+
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
       <header className="mb-8">
         <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-          <Link href="/">
-            <Button variant="outline" size="sm">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link href="/">
+              <Button variant="outline" size="sm">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Voltar
+              </Button>
+            </Link>
+            <ThemeToggle />
+          </div>
           <div className="flex-1 w-full md:w-auto">
             <h1 className="text-3xl font-bold">Criar Novo Treino</h1>
             <p className="text-muted-foreground">
@@ -364,24 +333,6 @@ export default function CreateWorkout() {
                     </SelectContent>
                   </Select>
                 </div>
-                <div className="space-y-2 md:col-span-2">
-                  <Label htmlFor="model">Modelo GPT</Label>
-                  <Select value={selectedModel} onValueChange={setSelectedModel}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione o modelo" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="gpt-4o-mini">GPT-4o Mini (Rápido e econômico)</SelectItem>
-                      <SelectItem value="gpt-4o">GPT-4o (Mais avançado)</SelectItem>
-                      <SelectItem value="gpt-4.1-nano">GPT-4.1 Nano (Econômico)</SelectItem>
-                      <SelectItem value="o1-preview">o1-preview (Raciocínio avançado)</SelectItem>
-                      <SelectItem value="o1-mini">o1-mini (Raciocínio rápido)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <p className="text-xs text-muted-foreground">
-                    Modelos da série o1 são ótimos para raciocínio complexo. GPT-4o é o melhor geral.
-                  </p>
-                </div>
               </div>
               <div className="flex flex-col md:flex-row gap-4">
                 <Button variant="outline" onClick={() => setStep(1)} className="flex-1 w-full">
@@ -390,7 +341,7 @@ export default function CreateWorkout() {
                 <Button
                   onClick={generateWorkout}
                   className="flex-1 w-full"
-                  disabled={!trainingType || !sessionDuration || !level || !frequency || !splitsCount || !selectedModel || isLoading}
+                  disabled={!trainingType || !sessionDuration || !level || !frequency || !splitsCount || isLoading}
                 >
                   {isLoading ? (
                     <>
@@ -498,6 +449,6 @@ export default function CreateWorkout() {
           </Card>
         )}
       </main>
-    </div>
+    </div >
   )
 }
