@@ -1,0 +1,76 @@
+{
+    "common": {
+        "appName": "Workout Tracker",
+        "welcome": "Bem-vindo",
+        "loading": "Carregando...",
+        "save": "Salvar",
+        "cancel": "Cancelar",
+        "delete": "Deletar",
+        "edit": "Editar",
+        "back": "Voltar",
+        "next": "Próximo",
+        "previous": "Anterior",
+        "logout": "Sair",
+        "login": "Entrar",
+        "register": "Cadastrar"
+    },
+    "auth": {
+        "signIn": "Entrar",
+        "signUp": "Cadastrar",
+        "email": "Email",
+        "password": "Senha",
+        "name": "Nome",
+        "confirmPassword": "Confirmar Senha",
+        "haveAccount": "Já tem uma conta?",
+        "noAccount": "Não tem uma conta?",
+        "signInButton": "Entrar",
+        "signUpButton": "Criar Conta"
+    },
+    "dashboard": {
+        "title": "Meus Treinos",
+        "subtitle": "Gerencie seus treinos personalizados",
+        "createWorkout": "Criar Novo Treino",
+        "activeWorkout": "Treino Ativo",
+        "completedWorkouts": "Treinos Concluíd
+
+os","noWorkouts": "Nenhum treino encontrado",
+        "aiSettings": "Minhas Configurações",
+        "aiSettingsDesc": "Gerencie suas preferências de conta"
+    },
+    "workout": {
+        "create": "Criar Novo Treino",
+        "personalInfo": "Informações Pessoais",
+        "personalInfoDesc": "Conte-nos sobre você para criarmos o treino perfeito",
+        "gender": "Sexo",
+        "male": "Masculino",
+        "female": "Feminino",
+        "other": "Outro",
+        "height": "Altura (cm)",
+        "weight": "Peso (kg)",
+        "preferences": "Preferências de Treino",
+        "preferencesDesc": "Como você prefere treinar?",
+        "splitType": "Tipo de Split",
+        "duration": "Duração por Sessão",
+        "level": "Nível de Treino",
+        "frequency": "Frequência Semanal",
+        "generate": "Gerar Treino",
+        "regenerate": "Gerar Novamente",
+        "saving": "Salvando...",
+        "generating": "Gerando...",
+        "review": "Revisar e Salvar",
+        "reviewDesc": "Revise seu treino gerado pela IA e salve-o",
+        "workoutName": "Nome do Treino",
+        "cycleDuration": "Duração do Ciclo (dias)",
+        "cycleDurationDesc": "Por quantos dias você usará este treino antes de precisar de um novo?",
+        "saveWorkout": "Salvar Treino"
+    },
+    "settings": {
+        "title": "Configurações",
+        "subtitle": "Gerencie suas preferências de conta",
+        "changePassword": "Alterar Senha",
+        "currentPassword": "Senha Atual",
+        "newPassword": "Nova Senha",
+        "confirmPassword": "Confirmar Nova Senha",
+        "updatePassword": "Atualizar Senha"
+    }
+}

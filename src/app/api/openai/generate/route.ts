@@ -10,7 +10,8 @@ import OpenAI from 'openai'
 interface WorkoutFormData {
   gender: string
   height: number
-  trainingType: string
+  weight: number
+  splitType: string
   sessionDuration: string
   level: string
   frequency: string
@@ -22,7 +23,7 @@ export async function POST(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions)
 
-    if (!session?.user?.id) {
+    if (!session?.user || !(session.user as any).id) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
@@ -46,7 +47,12 @@ export async function POST(request: NextRequest) {
       '45min': 5,
       '60min': 7,
       '75min': 8,
-      '90min+': 10
+      '90min': 10,
+      '120min': 12,
+      '150min': 14,
+      '180min': 16,
+      '210min': 18,
+      '240min': 20
     }
     const recommendedExercises = durationMap[formData.sessionDuration] || 5
 
@@ -54,11 +60,12 @@ export async function POST(request: NextRequest) {
     const basePrompt = `Crie um plano de treino personalizado e COMPLETO baseado nas seguintes informações:
 - Sexo: ${formData.gender}
 - Altura: ${formData.height}cm
-- Tipo de treinamento: ${formData.trainingType}
+- Peso: ${formData.weight}kg
+- Tipo de Split: ${formData.splitType}
+- Número de divisões: ${formData.splitsCount}
 - Duração por sessão: ${formData.sessionDuration}
 - Nível: ${formData.level}
 - Frequência semanal: ${formData.frequency}
-- Número de divisões/treinos: ${formData.splitsCount}
 
 ${formData.currentWorkout ? `Baseado no treino atual: ${JSON.stringify(formData.currentWorkout)}, gere uma versão atualizada com as novas preferências.` : ''}
 
@@ -94,7 +101,8 @@ REGRAS IMPORTANTES:
 8. SEGURANÇA: Respeite o nível do praticante (básico = exercícios mais simples, avançado = exercícios mais técnicos)
 9. AQUECIMENTO: O primeiro exercício de cada divisão deve ser mais leve/preparatório
 10. COMPLETUDE: Cada divisão deve ser um treino completo e balanceado
-11. NOMENCLATURA: Nos nomes dos treinos coloque apenas o nome do treino, como Treino A, Treino B, etc. **Não coloque nada além disso**
+11. NOMENCLATURA: Nos nomes dos treinos coloque APENAS a letra ou identificador, como "A", "B", "C". NÃO inclua a palavra "Treino" antes, pois o sistema já adiciona automaticamente.
+12. NÚMERO DE DIVISÕES: O array "splits" DEVE conter EXATAMENTE ${formData.splitsCount} objetos de treino. Se pedido ${formData.splitsCount} divisões, retorne ${formData.splitsCount} splits no JSON.
 
 IMPORTANTE: NÃO seja minimalista! Gere um treino COMPLETO com a quantidade EXATA de exercícios especificada (${recommendedExercises} exercícios por divisão).`
 
