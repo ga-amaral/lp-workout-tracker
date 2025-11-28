@@ -65,7 +65,7 @@ export default function Home() {
               </Button>
             </Link>
             <ThemeToggle />
-            <Button variant="ghost" size="sm" onClick={() => signOut({ callbackUrl: '/auth/signin' })}>
+            <Button variant="ghost" size="sm" onClick={() => signOut()}>
               <LogOut className="h-4 w-4 mr-2" />
               Sair
             </Button>
